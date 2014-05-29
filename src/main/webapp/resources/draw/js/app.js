@@ -6,14 +6,19 @@ var app = angular.module("draw", []);
 app.factory('DrawingCom', function ($http) {
     var sendQueue = [];
     wsPotocol = 'ws://';
+    wsHost = window.location.host;
+    wsPath = window.location.pathname;
     if (window.location.protocol == 'https:') {
         wsUrl = 'wss://';
     }
-    var wsLocation = wsPotocol + window.location.host + window.location.pathname + "drawing";
+    if(wsHost == 'draw-froelund.rhcloud.com'){
+        wsHost += ':8000';
+    }
+    var wsLocation = wsPotocol + wsHost + wsPath + "drawing";
     var ws = new WebSocket(wsLocation);
     this.data = {};
     var updateCB = function (data) {
-        console.log("No callback for new data registered.");
+        console.warn("No callback for new data registered.");
     };
     var sendDataCB = function (data) {
         console.warn("No callback for sending data registered.");
@@ -135,8 +140,6 @@ app.directive('drawing', function () {
                 ctx.stroke();
             }
             scope.$watch('drawSource', function(newSource, oldSource){
-                console.log("Source changed. Redraw!");
-                console.log(newSource);
                 for (var coordinate in newSource.data) {
                     var colorData = newSource.data[coordinate];
                     coordinate = coordinate.split(",");
