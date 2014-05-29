@@ -35,21 +35,16 @@ public class DrawWSServer {
 
     @OnMessage
     public void onMessage(Drawing message, Session sendingSession){
-        logger.log(Level.INFO, "Message received.");
         drawingService.addDrawing(sendingSession, message);
     }
 
     @OnOpen
     public void onOpen(Session session) {
         drawingService.onClientConnect(session);
-        logger.log(Level.INFO, "Client connected");
-        logger.log(Level.INFO, "Now there are {0} sessions", drawingService.getSessionCount());
     }
 
     @OnClose
     public void onClose(Session session) {
         drawingService.onClientDisconnect(session);
-        logger.log(Level.INFO, "Client disconnected");
-        logger.log(Level.INFO, "Now there are {0} sessions", drawingService.getSessionCount());
     }
 }
