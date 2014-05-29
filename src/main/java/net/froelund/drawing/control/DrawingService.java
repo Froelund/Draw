@@ -8,10 +8,9 @@ import javax.ejb.Singleton;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,8 +20,8 @@ import java.util.logging.Logger;
 @Singleton
 public class DrawingService {
 
-    private List<Session> sessions = new ArrayList<>();
-    private Drawing drawing = new Drawing();
+    private List<Session> sessions = new CopyOnWriteArrayList<>();
+    private Drawing drawing = new Drawing(new ConcurrentHashMap<DrawingPoint, ColorInfo>());
 
     private static final Logger logger = Logger.getLogger(DrawingService.class.getName());
 
