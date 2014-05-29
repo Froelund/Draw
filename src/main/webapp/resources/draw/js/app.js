@@ -5,7 +5,11 @@ var app = angular.module("draw", []);
 
 app.factory('DrawingCom', function ($http) {
     var sendQueue = [];
-    var wsLocation = "ws://" + window.location.host + window.location.pathname + "drawing";
+    wsPotocol = 'ws://';
+    if (window.location.protocol == 'https:') {
+        wsUrl = 'wss://';
+    }
+    var wsLocation = wsPotocol + window.location.host + window.location.pathname + "drawing";
     var ws = new WebSocket(wsLocation);
     this.data = {};
     var updateCB = function (data) {
@@ -48,34 +52,6 @@ app.controller('DrawingCtrl', function ($scope, DrawingCom) {
         $scope.drawSource = JSON.parse(message.data);
         $scope.$apply()
     });
-    DrawingCom.sendUpdate(JSON.stringify({
-        data: {
-            "1,1": {
-                r: 255,
-                g: 255,
-                b: 255,
-                transparency: 255
-            },
-            "1,2": {
-                r: 255,
-                g: 255,
-                b: 255,
-                transparency: 255
-            },
-            "2,1": {
-                r: 255,
-                g: 255,
-                b: 255,
-                transparency: 255
-            },
-            "2,2": {
-                r: 255,
-                g: 255,
-                b: 255,
-                transparency: 255
-            }
-        }
-    }));
 });
 app.directive('drawing', function () {
     return {
