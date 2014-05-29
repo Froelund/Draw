@@ -1,0 +1,10 @@
+body{
+    background-color: #EEEEEE;
+}
+#drawing-container{
+    text-align: center;
+    padding: 30px 0px;
+}
+#drawing-container canvas{
+    background-color: #FFFFFF;
+}

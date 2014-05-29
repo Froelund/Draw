@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app="draw">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Draw</title>
+    <link rel="stylesheet" href="resources/draw/css/style.css"/>
+</head>
+<body>
+    <div id="drawing-container" ng-controller="DrawingCtrl">
+        <h1>Ready.. Set.. Draw!</h1>
+        <canvas width="800" height="600" class="drawing" on-drawing-update="onDrawingUpdate(updateData)" draw-source="drawSource" ></canvas>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.10/angular.js"></script>
+    <script src="resources/draw/js/app.js"></script>
+</body>
+</html>
