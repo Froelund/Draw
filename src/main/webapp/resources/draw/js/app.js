@@ -6,15 +6,20 @@ var app = angular.module("draw", []);
 app.factory('DrawingCom', function ($http) {
     var sendQueue = [];
     wsPotocol = 'ws://';
-    wsHost = window.location.host;
+    wsHost = window.location.hostname;
     wsPath = window.location.pathname;
+    wsPort = ":" + window.location.port;
     if (window.location.protocol == 'https:') {
         wsPotocol = 'wss://';
     }
     if(wsHost == 'draw-froelund.rhcloud.com'){
-        wsHost += ':8000';
+        if(wsPotocol == 'wss://'){
+            wsPort = ':8443';
+        }else{
+            wsPort = ':8000'
+        }
     }
-    var wsLocation = wsPotocol + wsHost + wsPath + "drawing";
+    var wsLocation = wsPotocol + wsHost + wsPort + wsPath + "drawing";
     var ws = new WebSocket(wsLocation);
     this.data = {};
     var updateCB = function (data) {
