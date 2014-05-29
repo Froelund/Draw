@@ -9,7 +9,7 @@ app.factory('DrawingCom', function ($http) {
     wsHost = window.location.host;
     wsPath = window.location.pathname;
     if (window.location.protocol == 'https:') {
-        wsUrl = 'wss://';
+        wsPotocol = 'wss://';
     }
     if(wsHost == 'draw-froelund.rhcloud.com'){
         wsHost += ':8000';
