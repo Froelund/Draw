@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by froelund on 5/26/14.
@@ -26,7 +27,7 @@ public class Drawing {
 
     public Map<DrawingPoint, ColorInfo> getData() {
         if (data==null){
-            data = new HashMap<>();
+            data = new ConcurrentHashMap<>();
         }
         return data;
     }
