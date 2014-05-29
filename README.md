@@ -6,7 +6,7 @@ Draw application build on JavaEE and Angularjs
 #Usage
 This will run on any JavaEE 7 compliant server.
 
-I have configured it to run with openshift, but it seems to run kind of slow.
+I have configured it to run with [OpenShift](https://draw-froelund.rhcloud.com/), but it seems to run kind of slow.
 
 ##Frontend
 
