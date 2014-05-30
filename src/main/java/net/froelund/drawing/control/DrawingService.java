@@ -26,13 +26,13 @@ public class DrawingService {
     private static final Logger logger = Logger.getLogger(DrawingService.class.getName());
 
     public void onClientConnect(Session session){
-        logger.log(Level.INFO, "Client connected. Total {0}", getSessionCount());
         sendDrawing(session, this.drawing);
         sessions.add(session);
+        logger.log(Level.INFO, "Client connected. Total {0}", getSessionCount());
     }
     public void onClientDisconnect(Session session){
-        logger.log(Level.INFO, "Client disconnected. Total {0}", getSessionCount());
         sessions.remove(sessions.indexOf(session));
+        logger.log(Level.INFO, "Client disconnected. Total {0}", getSessionCount());
     }
     public int getSessionCount(){
         return sessions.size();
@@ -40,14 +40,18 @@ public class DrawingService {
     public void addDrawing(Session sendingSession, Drawing drawing) {
         logger.log(Level.INFO, "New drawing submitted");
         mergeDrawing(drawing);
+        int sendSessionCount = 0;
         for (Session receiverSession : sessions) {
             if (!receiverSession.equals(sendingSession)){
                 sendDrawing(receiverSession, drawing);
+                sendSessionCount++;
             }
         }
+        logger.log(Level.INFO, "Drawing send to {0} sessions.", sendSessionCount);
     }
     void mergeDrawing(Drawing drawing){
         this.drawing.getData().putAll(drawing.getData());
+        logger.log(Level.INFO, "{0}, drawing objects merged into main drawing", drawing.getData().size());
     }
 
     void broadcastDrawing(Drawing message){
