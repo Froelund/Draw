@@ -6,6 +6,7 @@ import net.froelund.drawing.control.encoding.DrawingEncoder;
 import net.froelund.drawing.entity.Drawing;
 
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -23,13 +24,11 @@ import java.util.logging.Logger;
         encoders = DrawingEncoder.class,
         decoders = DrawingDecoder.class
 )
-@Stateful
+@Stateless
 public class DrawWSServer {
 
     @Inject
     private DrawingService drawingService;
-
-    private List<Session> sessions = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger(DrawWSServer.class.getName());
 
