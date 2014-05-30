@@ -1,4 +1,7 @@
+# IDE files
 .idea/
 *.ipr
 *.iml
 *.iws
+
+target
