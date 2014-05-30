@@ -4,7 +4,8 @@ import net.froelund.drawing.entity.ColorInfo;
 import net.froelund.drawing.entity.Drawing;
 import net.froelund.drawing.entity.DrawingPoint;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;

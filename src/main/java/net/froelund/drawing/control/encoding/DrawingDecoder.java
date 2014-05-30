@@ -5,12 +5,9 @@ import net.froelund.drawing.entity.Drawing;
 import net.froelund.drawing.entity.DrawingPoint;
 
 import javax.json.*;
-import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
-import java.io.IOException;
 import java.io.Reader;
-import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
