@@ -10,6 +10,8 @@ import javax.websocket.Session;
 import java.io.IOException;
 
 /**
+ * Utils for multiple session tests.
+ *
  * Created by froelund on 6/1/14.
  */
 class SessionServiceTestUtils {

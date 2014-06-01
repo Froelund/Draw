@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Handles the session communication.
+ *
  * Created by froelund on 5/30/14.
  */
 @Stateless
