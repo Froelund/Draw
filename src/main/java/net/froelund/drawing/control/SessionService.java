@@ -1,8 +1,13 @@
 package net.froelund.drawing.control;
 
+import net.froelund.Cache;
+
+import javax.annotation.PostConstruct;
 import javax.ejb.*;
+import javax.inject.Inject;
 import javax.websocket.Session;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,19 +15,27 @@ import java.util.logging.Logger;
 /**
  * Created by froelund on 5/30/14.
  */
-@Singleton
-@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
+@Stateless
 public class SessionService {
+
+    public static final String SESSION_INDEX = "sessionIndex";
+    @Inject
+    Cache cache;
 
     private static final Logger logger = Logger.getLogger(SessionService.class.getName());
 
-    List<Session> sessionIndex = new ArrayList<>();
+    @PostConstruct
+    public void init(){
+        if (!cache.has("sessionIndex")){
+            cache.put(SESSION_INDEX, Collections.synchronizedList(new ArrayList<Session>()));
+        }
+    }
 
     public void clientConnect(Session session){
-        sessionIndex.add(session);
+        getSessionIndex().add(session);
         logger.log(Level.INFO, "Client connected. Total {0}", getSessionCount());
     }
-    @Lock(LockType.READ)
+
     public void sendObject(Session session, Object o){
         if (session.isOpen()){
             session.getAsyncRemote().sendObject(o);
@@ -31,22 +44,24 @@ public class SessionService {
     }
     public void clienDisconnect(Session session){
         try {
-            sessionIndex.remove(session);
+            getSessionIndex().remove(session);
         }catch (NullPointerException e){
             logger.log(Level.INFO, "Tried to remove session, but it was already gone..");
         }
         logger.log(Level.INFO, "Client disconnected. Total {0}", getSessionCount());
     }
-    @Lock(LockType.READ)
     public void broadcastObject(Session sendingSession, Object o){
-        for (Session session : sessionIndex) {
+        for (Session session : sendingSession.getOpenSessions()) {
             if (!sendingSession.equals(session)){
                 sendObject(session, o);
             }
         }
     }
-    @Lock(LockType.READ)
     public int getSessionCount(){
-        return sessionIndex.size();
+        return getSessionIndex().size();
+    }
+
+    List<Session> getSessionIndex(){
+        return (List<Session>) cache.get("sessionIndex");
     }
 }

@@ -1,5 +1,6 @@
 package net.froelund.drawing.control;
 
+import net.froelund.Cache;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,43 +17,19 @@ import java.io.IOException;
 public class SessionServiceTest {
 
     SessionService sessionService;
-    private int sessionCount = 0;
 
     @Before
     public void init(){
-        sessionService = new SessionService();
+        sessionService = Mockito.mock(SessionService.class, Mockito.CALLS_REAL_METHODS);
+        sessionService.cache = new Cache();
+        sessionService.cache.initialize();
+        sessionService.init();
     }
 
     @Test
     public void testSessionAdding(){
-        sessionService.clientConnect(getMockedSession());
+        sessionService.clientConnect(SessionServiceTestUtils.getMockedSession());
         Assert.assertThat("Session wasn't added", sessionService.getSessionCount(), CoreMatchers.is(1));
     }
 
-    Session getMockedSession(){
-        Session session = Mockito.mock(Session.class);
-        Mockito.when(session.getId()).thenReturn(String.valueOf(sessionCount));
-        sessionCount++;
-        return session;
-    }
-
-    Session getMockedDelayedSession(){
-        Session session = getMockedSession();
-        Mockito.when(session.getBasicRemote()).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                RemoteEndpoint.Basic basicRemoteMock = Mockito.mock(RemoteEndpoint.Basic.class);
-                Thread.sleep(5000);
-                return basicRemoteMock;
-            }
-        });
-        try {
-            session.getBasicRemote().sendObject("Nih!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (EncodeException e) {
-            e.printStackTrace();
-        }
-        return session;
-    }
 }

@@ -12,6 +12,12 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Caching -->
+        <dependency>
+            <groupId>net.froelund</groupId>
+            <artifactId>cache</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
