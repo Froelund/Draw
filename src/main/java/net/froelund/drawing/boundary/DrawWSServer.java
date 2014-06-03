@@ -41,15 +41,4 @@ public class DrawWSServer {
             sessionService.broadcastObject(sendingSession, message);
         }
     }
-
-    @OnOpen
-    public void onOpen(Session session) {
-        sessionService.clientConnect(session);
-        sessionService.sendObject(session, drawingService.getDrawing());
-    }
-
-    @OnClose
-    public void onClose(Session session) {
-        sessionService.clienDisconnect(session);
-    }
 }
