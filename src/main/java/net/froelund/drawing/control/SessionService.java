@@ -37,7 +37,7 @@ public class SessionService {
         getSessionIndex().add(session);
         logger.log(Level.INFO, "Client connected. Total {0}", getSessionCount());
     }
-
+    @Asynchronous
     public void sendObject(Session session, Object o){
         if (session.isOpen()){
             session.getAsyncRemote().sendObject(o);
