@@ -19,7 +19,7 @@ app.factory('DrawingCom', function ($http) {
             wsPort = ':8000';
         }
     }else if(wsHost == 'draw.froelund.net'){
-        wsPort = '28001';
+        wsPort = ':28001';
         wsPath = '/draw/'
     }
     var wsLocation = wsPotocol + wsHost + wsPort + wsPath + "drawing";
