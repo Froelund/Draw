@@ -136,16 +136,7 @@ app.directive('drawing', function () {
                     }
                 };
 
-                for(var coordinate in cleanImage){
-                    if(coordinate in dataCache){
-                        if(JSON.stringify(dataCache[coordinate]) != JSON.stringify(cleanImage[coordinate])){
-                           diffData[coordinate] = cleanImage[coordinate];
-                        }
-                    }else{
-                        diffData[coordinate] = cleanImage[coordinate]
-                    }
-                    dataCache[coordinate] = cleanImage[coordinate];
-                }
+                diffData = diffImageData(cleanImage, dataCache)
 
                 scope.onDrawingUpdate({
                     updateData: diffData,
@@ -161,9 +152,24 @@ app.directive('drawing', function () {
                 ctx.strokeStyle = "#4bf";
                 ctx.stroke();
             }
+            function diffImageData(mainData, lookupData){
+                var diffData = {};
+                for(var coordinate in mainData){
+                    if(coordinate in lookupData){
+                        if(JSON.stringify(lookupData[coordinate]) != JSON.stringify(mainData[coordinate])){
+                            diffData[coordinate] = mainData[coordinate];
+                        }
+                    }else{
+                        diffData[coordinate] = mainData[coordinate]
+                    }
+                    lookupData[coordinate] = mainData[coordinate];
+                }
+                return diffData;
+            }
             scope.$watch('drawSource', function(newSource, oldSource){
-                for (var coordinate in newSource.data) {
-                    var colorData = newSource.data[coordinate];
+                var diffData = diffImageData(newSource.data, dataCache);
+                for (var coordinate in diffData) {
+                    var colorData = diffData[coordinate];
                     coordinate = coordinate.split(",");
                     busyPX.data[0] = colorData.r;
                     busyPX.data[1] = colorData.g;
@@ -171,7 +177,7 @@ app.directive('drawing', function () {
                     busyPX.data[3] = colorData.transparency;
                     ctx.putImageData( busyPX, coordinate[0], coordinate[1] );
                 }
-            }, true)
+            }, true);
         }
     };
 });
