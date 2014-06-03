@@ -80,6 +80,7 @@ app.directive('drawing', function () {
             var busyPX = ctx.createImageData(1,1);
             var lastX;
             var lastY;
+            var dataCache = {};
             element.bind('mousedown', function(event){
                 if(event.offsetX!==undefined){
                     lastX = event.offsetX;
@@ -120,6 +121,7 @@ app.directive('drawing', function () {
                 drawing = false;
                 var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 var cleanImage = {};
+                var diffData = {};
 
                 for (var i = 0; i < image.data.length; i+=4) {
                     var x = (Math.floor(i / 4) % canvas.width);
@@ -133,8 +135,20 @@ app.directive('drawing', function () {
                         };
                     }
                 };
+
+                for(var coordinate in cleanImage){
+                    if(coordinate in dataCache){
+                        if(JSON.stringify(dataCache[coordinate]) != JSON.stringify(cleanImage[coordinate])){
+                           diffData[coordinate] = cleanImage[coordinate];
+                        }
+                    }else{
+                        diffData[coordinate] = cleanImage[coordinate]
+                    }
+                    dataCache[coordinate] = cleanImage[coordinate];
+                }
+
                 scope.onDrawingUpdate({
-                    updateData: cleanImage,
+                    updateData: diffData,
                     context: ctx
                 });
             }
