@@ -41,7 +41,7 @@ public class SessionService {
     public void sendObject(Session session, Object o){
         if (session.isOpen()){
             session.getAsyncRemote().sendObject(o);
-            logger.log(Level.INFO, "Object send.");
+            logger.log(Level.FINE, "Object send.");
         }
     }
     public void clienDisconnect(Session session){
